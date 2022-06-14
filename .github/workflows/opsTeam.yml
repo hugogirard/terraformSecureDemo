@@ -1,0 +1,38 @@
+name: Create Terraform Protected Resources
+
+on:
+  workflow_dispatch:    
+  push:
+    branches:
+      - "main"
+    paths:
+      - ".github/workflows/opsTeam.yml"
+
+env:
+  RESOURCE_GROUP_NAME: 'rg-tf-state'
+  LOCATION: 'canadacentral'
+
+jobs:    
+  create-azure-core-resources:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_OPS_TEAM }}
+
+      - name: Set Environment Variables
+        uses: tw3lveparsecs/github-actions-setvars@v0.1
+        with:
+          envFilePath: ./github/workflows/vars.env
+
+      - name: Create Azure Group Terraform State
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+
+
