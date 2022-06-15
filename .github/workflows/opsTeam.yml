@@ -8,10 +8,6 @@ on:
     paths:
       - ".github/workflows/opsTeam.yml"
 
-env:
-  RESOURCE_GROUP_NAME: 'rg-tf-state'
-  LOCATION: 'canadacentral'
-
 jobs:    
   create-azure-core-resources:
 
@@ -29,10 +25,14 @@ jobs:
       - name: Set Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
         with:
-          envFilePath: ./conf/vars.env
+          envFilePath: ./conf/vars.base.env
 
       - name: Create Azure Group Terraform State
         run: |
           az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+
+      - name: Create Azure Storage to keep Terraform State
+        run: |
+          az storage account create --name ${{ env.STORAGE_NAME }} --resource-group ${{ env.RESOURCE_GROUP_NAME }} --location ${{ env.LOCATION }}
 
 
