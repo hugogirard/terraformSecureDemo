@@ -29,10 +29,10 @@ jobs:
 
       - name: Create Azure Group Terraform State
         run: |
-          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+          az group create -n $RESOURCE_GROUP_NAME -l $LOCATION
 
       - name: Create Azure Storage to keep Terraform State
         run: |
-          az storage account create --name ${{ env.STORAGE_NAME }} --resource-group ${{ env.RESOURCE_GROUP_NAME }} --location ${{ env.LOCATION }}
+          az storage account create --name $STORAGE_NAME --resource-group $RESOURCE_GROUP_NAME --location $LOCATION
 
 
